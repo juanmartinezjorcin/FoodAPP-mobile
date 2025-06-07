@@ -11,7 +11,6 @@
     "lint": "expo lint",
     "server": "node scripts/start-server.js",
     "ngrok": "node scripts/expose-ngrok.js"
-
   },
   "dependencies": {
     "@expo/vector-icons": "^14.1.0",
