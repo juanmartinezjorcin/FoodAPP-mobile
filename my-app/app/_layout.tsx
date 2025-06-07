@@ -5,7 +5,7 @@ import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
-import HomeScreen from '@/screens/CartScreen.jsx'; // Adjust the import path as necessary
+import HomeScreen from '@/screens/HomeScreen';
 export default function RootLayout() {
   const colorScheme = useColorScheme();
   const [loaded] = useFonts({
