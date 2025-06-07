@@ -3,10 +3,12 @@ import { View, Text, Pressable, StyleSheet } from 'react-native';
 
 const CartItem = ({ item, onAdd, onRemove }) => {
   return (
-    <View>
+    <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 40, marginBottom: 10 }}>
+      <View style={{ flex: 1, marginRight: 10 }}>
       <Text style={styles.title}>{item.title} {item.emoji}</Text>
       <Text>Cantidad: {item.quantity}</Text>
       <Text>Subtotal: ${(item.price * item.quantity).toFixed(2)}</Text>
+      </View>
       <View style={styles.buttons}>
         <Pressable onPress={onAdd} style={({ pressed }) => [
                     styles.button,
