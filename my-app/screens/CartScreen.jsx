@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet, Pressable } from 'react-native';
 import CartItem from '../components/CartItem';
 
-const API_URL = "http://10.0.2.2:3001";// emulador
+const API_URL = "http://10.0.2.2:3001";//para emulador
 
 const CartScreen = () => {
     const [cartItems, setCartItems] = useState([]);
@@ -18,11 +18,10 @@ const CartScreen = () => {
         ])
         .then(([products, orders]) => {
             const cart = orders.map(order => {
-                // Busca el producto por productId (no por id de la orden)
                 const product = products.find(p => Number(p.id) === Number(order.productId));
                 return {
-                    id: order.id, // id de la orden
-                    productId: order.productId, // id del producto
+                    id: order.id,
+                    productId: order.productId,
                     title: product?.name || "Producto",
                     price: product?.price || 0,
                     emoji: product?.image || "",
@@ -53,12 +52,9 @@ const CartScreen = () => {
 
     const handleOrder = async () => {
         try {
-
             for (const item of cartItems) {
-
                 const res = await fetch(`${API_URL}/products/${item.productId}`);
                 const product = await res.json();
-
                 await fetch(`${API_URL}/products/${item.productId}`, {
                     method: 'PATCH',
                     headers: { 'Content-Type': 'application/json' },
@@ -72,6 +68,7 @@ const CartScreen = () => {
 
             setCartItems([]);
             alert("¡Pedido realizado!");
+
             fetchCart();
         } catch (err) {
             alert("Error al procesar el pedido");

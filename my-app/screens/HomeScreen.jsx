@@ -10,6 +10,9 @@ import {
 
 // ¡No debés renderizar ProductDetailScreen directamente dentro del FlatList!
 import { useNavigation } from '@react-navigation/native';
+import ProductCard from '../comp/ProductCard';
+
+const API_URL = "http://10.0.2.2:3001";
 
 const HomeScreen = () => {
   const navigation = useNavigation(); // <- obtener navegación
@@ -17,13 +20,20 @@ const HomeScreen = () => {
   const [total, setTotal] = useState(0);
 
   useEffect(() => {
-    const customData = [
-      { id: 1, title: "Pancho", price: 0.5, emoji: "🌭" },
-      { id: 2, title: "Hamburguesa", price: 0.4, emoji: "🍔" },
-      { id: 3, title: "Papas", price: 0.8, emoji: "🍟" },
-      { id: 4, title: "Pollo", price: 1.5, emoji: "🍗" }
-    ];
-    setProducts(customData);
+    fetch(`${API_URL}/products`)
+      .then(res => res.json())
+      .then(data => {
+        const mapped = data.map(p => ({
+          id: Number(p.id),
+          title: p.name,
+          price: p.price,
+          emoji: p.image,
+          stock: p.stock,
+          description: p.description,
+        }));
+        setProducts(mapped);
+      })
+      .catch(err => console.error(err));
   }, []);
 
   const handleAdd = (price) => setTotal(t => t + price);
@@ -31,29 +41,27 @@ const HomeScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity style={styles.menuButton}>
           <View style={styles.menuIcon} />
         </TouchableOpacity>
         <Text style={styles.title}>FOOD APP</Text>
-      </View>
+        <View style={styles.navButtons}>
+  <TouchableOpacity
+    style={styles.navButton}
+    onPress={() => navigation.navigate('ProductDetailScreen')}
+  >
+    <Text style={styles.navButtonText}>Ir a Detalles</Text>
+  </TouchableOpacity>
 
-      {/* Botones de navegación */}
-      <View style={styles.navButtons}>
-        <TouchableOpacity
-          style={styles.navButton}
-          onPress={() => navigation.navigate('ProductDetailScreen')}
-        >
-          <Text style={styles.navButtonText}>Ir a Detalle</Text>
-        </TouchableOpacity>
+  <TouchableOpacity
+    style={styles.navButton}
+    onPress={() => navigation.navigate('CartScreen')}
+  >
+    <Text style={styles.navButtonText}>Ir al Carrito</Text>
+  </TouchableOpacity>
+</View>
 
-        <TouchableOpacity
-          style={styles.navButton}
-          onPress={() => navigation.navigate('CartScreen')}
-        >
-          <Text style={styles.navButtonText}>Ir al Carrito</Text>
-        </TouchableOpacity>
       </View>
 
       {/* Productos */}
@@ -78,8 +86,6 @@ const HomeScreen = () => {
           </View>
         )}
       />
-
-      {/* Total */}
       <View style={styles.totalContainer}>
         <Text style={styles.totalText}>Total: ${total.toFixed(2)}</Text>
       </View>
@@ -149,23 +155,23 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   totalContainer: {
-    position: 'absolute', // <- mejor que "fixed"
-    bottom: 10,
-    left: 16,
-    right: 16,
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 12,
-    backgroundColor: '#fff',
-    borderWidth: 1,
-    borderColor: '#ccc',
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 4,
-    zIndex: 999,
+  position: 'fixed',
+  bottom: 5,
+  marginLeft: 16,
+  marginRight: 16,
+  paddingVertical: 12,
+  paddingHorizontal: 24,
+  borderRadius: 12,
+  backgroundColor: '#fff',
+  borderWidth: 1,
+  borderColor: '#ccc',
+  alignItems: 'center',
+  shadowColor: '#000',
+  shadowOffset: { width: 0, height: 2 },
+  shadowOpacity: 0.2,
+  shadowRadius: 4,
+  elevation: 4,
+  zIndex: 999,
   },
   totalText: {
     fontSize: 18,
