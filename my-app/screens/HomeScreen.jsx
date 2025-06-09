@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
   },
   totalContainer: {
   position: 'fixed',
-  bottom: 90,
+  bottom: 5,
   marginLeft: 16,
   marginRight: 16,
   paddingVertical: 12,
