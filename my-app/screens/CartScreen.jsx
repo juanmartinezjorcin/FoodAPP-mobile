@@ -125,7 +125,7 @@ const CartScreen = () => {
 
 const styles = StyleSheet.create({
     container: { flex: 1, padding: 16, backgroundColor: '#fff', },
-    card: { flex: 0.9, margin: 10, padding: 16, borderWidth: 1, borderRadius: 10, borderColor: '#ccc', backgroundColor: 'lightgrey', borderColor: 'black', borderWidth: 1 },
+    card: { flex: 0.9, margin: 10, padding: 16, borderWidth: 1, borderRadius: 10, borderColor: '#ccc', backgroundColor: 'lightgrey'},
     totalText: { fontSize: 20, fontWeight: 'bold', textAlign: 'center', marginTop: 16 },
     button: {
         backgroundColor: 'grey', padding: 10, borderRadius: 15, marginTop: 20, alignItems: 'center', borderColor: 'black', borderWidth: 1, width: '40%', alignSelf: 'center',
