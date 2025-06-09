@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
   },
   cartButton: {
     marginLeft: 16,
-    backgroundColor: '#888',
+    backgroundColor: 'white',
     padding: 10,
     borderRadius: 20,
     alignItems: 'center',
