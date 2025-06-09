@@ -1,27 +1,38 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, StyleSheet, Pressable, } from 'react-native';
+import { View, Text, FlatList, StyleSheet, Pressable } from 'react-native';
 import CartItem from '../components/CartItem';
+
+const API_URL = "http://10.0.2.2:3001";// emulador
 
 const CartScreen = () => {
     const [cartItems, setCartItems] = useState([]);
 
     useEffect(() => {
-        const data = [
-            { id: 1, title: "Pancho", price: 0.5, emoji: "🌭", quantity: 1 },
-            { id: 2, title: "Hamburguesa", price: 0.4, emoji: "🍔", quantity: 2 },
-            { id: 3, title: "Papas", price: 0.8, emoji: "🍟", quantity: 1 },
-            { id: 4, title: "Pollo", price: 1.5, emoji: "🍗", quantity: 1 }
-        ];
-        setCartItems(data);
-
-        // 📝 Cuando se use el JSON con ngrok, reemplazar por esto:
-        /*
-        fetch("http://<tu-url-ngrok>.ngrok.io/data.json")
-          .then(res => res.json())
-          .then(data => setCartItems(data))
-          .catch(err => console.error(err));
-        */
+        fetchCart();
     }, []);
+
+    const fetchCart = () => {
+        Promise.all([
+            fetch(`${API_URL}/products`).then(res => res.json()),
+            fetch(`${API_URL}/order`).then(res => res.json())
+        ])
+        .then(([products, orders]) => {
+            const cart = orders.map(order => {
+                // Busca el producto por productId (no por id de la orden)
+                const product = products.find(p => Number(p.id) === Number(order.productId));
+                return {
+                    id: order.id, // id de la orden
+                    productId: order.productId, // id del producto
+                    title: product?.name || "Producto",
+                    price: product?.price || 0,
+                    emoji: product?.image || "",
+                    quantity: order.quantity
+                };
+            });
+            setCartItems(cart);
+        })
+        .catch(err => console.error(err));
+    };
 
     const increaseQuantity = (id) => {
         setCartItems(items =>
@@ -38,6 +49,34 @@ const CartScreen = () => {
                     ? { ...item, quantity: item.quantity - 1 } : item
             )
         );
+    };
+
+    const handleOrder = async () => {
+        try {
+
+            for (const item of cartItems) {
+
+                const res = await fetch(`${API_URL}/products/${item.productId}`);
+                const product = await res.json();
+
+                await fetch(`${API_URL}/products/${item.productId}`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ stock: product.stock - item.quantity })
+                });
+            }
+
+            for (const item of cartItems) {
+                await fetch(`${API_URL}/order/${item.id}`, { method: 'DELETE' });
+            }
+
+            setCartItems([]);
+            alert("¡Pedido realizado!");
+            fetchCart();
+        } catch (err) {
+            alert("Error al procesar el pedido");
+            console.error(err);
+        }
     };
 
     const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
@@ -74,7 +113,7 @@ const CartScreen = () => {
                     styles.button,
                     pressed && { backgroundColor: 'green', borderColor: '#666' }
                 ]}
-                onPress={() => alert("Pedido realizado")}
+                onPress={handleOrder}
             >
                 <Text style={[
                     styles.totalText,

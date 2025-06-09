@@ -7,9 +7,12 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import ProductCardDetail from '../screens/ProductCardDetail';
+
+// ¡No debés renderizar ProductDetailScreen directamente dentro del FlatList!
+import { useNavigation } from '@react-navigation/native';
 
 const HomeScreen = () => {
+  const navigation = useNavigation(); // <- obtener navegación
   const [products, setProducts] = useState([]);
   const [total, setTotal] = useState(0);
 
@@ -36,6 +39,23 @@ const HomeScreen = () => {
         <Text style={styles.title}>FOOD APP</Text>
       </View>
 
+      {/* Botones de navegación */}
+      <View style={styles.navButtons}>
+        <TouchableOpacity
+          style={styles.navButton}
+          onPress={() => navigation.navigate('ProductDetailScreen')}
+        >
+          <Text style={styles.navButtonText}>Ir a Detalle</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.navButton}
+          onPress={() => navigation.navigate('CartScreen')}
+        >
+          <Text style={styles.navButtonText}>Ir al Carrito</Text>
+        </TouchableOpacity>
+      </View>
+
       {/* Productos */}
       <FlatList
         data={products}
@@ -43,7 +63,19 @@ const HomeScreen = () => {
         numColumns={2}
         contentContainerStyle={styles.grid}
         renderItem={({ item }) => (
-          <ProductCardDetail product={item} onAdd={handleAdd} onRemove={handleRemove} />
+          <View style={styles.productItem}>
+            <Text style={{ fontSize: 32 }}>{item.emoji}</Text>
+            <Text>{item.title}</Text>
+            <Text>${item.price.toFixed(2)}</Text>
+            <View style={{ flexDirection: 'row', marginTop: 4 }}>
+              <TouchableOpacity onPress={() => handleAdd(item.price)} style={styles.actionButton}>
+                <Text style={styles.actionButtonText}>+</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => handleRemove(item.price)} style={styles.actionButton}>
+                <Text style={styles.actionButtonText}>-</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
         )}
       />
 
@@ -78,29 +110,62 @@ const styles = StyleSheet.create({
     borderRadius: 2,
   },
   title: { fontSize: 22, fontWeight: 'bold' },
+  navButtons: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    gap: 10,
+    marginVertical: 10,
+  },
+  navButton: {
+    backgroundColor: '#007AFF',
+    padding: 10,
+    borderRadius: 8,
+    marginHorizontal: 5,
+  },
+  navButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
   grid: {
     paddingHorizontal: 8,
     paddingBottom: 80,
     alignItems: 'center',
   },
+  productItem: {
+    margin: 8,
+    padding: 12,
+    backgroundColor: '#f5f5f5',
+    borderRadius: 8,
+    alignItems: 'center',
+    width: 140,
+  },
+  actionButton: {
+    marginHorizontal: 6,
+    paddingHorizontal: 8,
+    backgroundColor: '#ccc',
+    borderRadius: 6,
+  },
+  actionButtonText: {
+    fontSize: 18,
+  },
   totalContainer: {
-  position: 'fixed',
-  bottom: 5,
-  marginLeft: 16,
-  marginRight: 16,
-  paddingVertical: 12,
-  paddingHorizontal: 24,
-  borderRadius: 12,
-  backgroundColor: '#fff',
-  borderWidth: 1,
-  borderColor: '#ccc',
-  alignItems: 'center',
-  shadowColor: '#000',
-  shadowOffset: { width: 0, height: 2 },
-  shadowOpacity: 0.2,
-  shadowRadius: 4,
-  elevation: 4,
-  zIndex: 999,
+    position: 'absolute', // <- mejor que "fixed"
+    bottom: 10,
+    left: 16,
+    right: 16,
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 12,
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    borderColor: '#ccc',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 4,
+    zIndex: 999,
   },
   totalText: {
     fontSize: 18,
