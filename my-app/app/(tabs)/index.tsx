@@ -5,10 +5,6 @@
 // import ParallaxScrollView from '@/componentsOriginal/ParallaxScrollView';
 // import { ThemedText } from '@/componentsOriginal/ThemedText';
 // import { ThemedView } from '@/componentsOriginal/ThemedView';
-import Screen from '@/screens/CartScreen'; 
+import HomeScreen from '../../screens/HomeScreen';
 
-export default function HomeScreen() {
-  return (
-    <Screen/>
-  );
-}
+export default HomeScreen;
