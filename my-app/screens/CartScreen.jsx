@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet, Pressable } from 'react-native';
 import CartItem from '../components/CartItem';
 
-const API_URL = "http://10.0.2.2:3001";//para emulador
+const URL = "http://10.0.2.2:3001";//para emulador
 
 const CartScreen = () => {
     const [cartItems, setCartItems] = useState([]);
@@ -13,8 +13,8 @@ const CartScreen = () => {
 
     const fetchCart = () => {
         Promise.all([
-            fetch(`${API_URL}/products`).then(res => res.json()),
-            fetch(`${API_URL}/order`).then(res => res.json())
+            fetch(`${URL}/products`).then(res => res.json()),
+            fetch(`${URL}/order`).then(res => res.json())
         ])
         .then(([products, orders]) => {
             const cart = orders.map(order => {
@@ -53,9 +53,9 @@ const CartScreen = () => {
     const handleOrder = async () => {
         try {
             for (const item of cartItems) {
-                const res = await fetch(`${API_URL}/products/${item.productId}`);
+                const res = await fetch(`${URL}/products/${item.productId}`);
                 const product = await res.json();
-                await fetch(`${API_URL}/products/${item.productId}`, {
+                await fetch(`${URL}/products/${item.productId}`, {
                     method: 'PATCH',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ stock: product.stock - item.quantity })
@@ -63,7 +63,7 @@ const CartScreen = () => {
             }
 
             for (const item of cartItems) {
-                await fetch(`${API_URL}/order/${item.id}`, { method: 'DELETE' });
+                await fetch(`${URL}/order/${item.id}`, { method: 'DELETE' });
             }
 
             setCartItems([]);

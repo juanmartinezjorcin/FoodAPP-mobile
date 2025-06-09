@@ -73,16 +73,5 @@
       "stock": 15
     }
   ],
-  "order": [
-    {
-      "id": "2",
-      "productId": 3,
-      "quantity": 1
-    },
-    {
-      "id": "3",
-      "productId": 5,
-      "quantity": 3
-    }
-  ]
+  "order": []
 }
