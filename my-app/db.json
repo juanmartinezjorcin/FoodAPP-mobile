@@ -1,67 +1,88 @@
 {
   "products": [
     {
-      "id": 1,
+      "id": "1",
       "name": "Pizza",
       "description": "Deliciosa pizza de muzzarella",
       "price": 300,
-      "image": "🍕"
+      "image": "🍕",
+      "stock": 7
     },
     {
-      "id": 2,
+      "id": "2",
       "name": "Pancho",
       "description": "Pancho con mostaza y kétchup",
       "price": 120,
-      "image": "🌭"
+      "image": "🌭",
+      "stock": 20
     },
     {
-      "id": 3,
+      "id": "3",
       "name": "Olímpico",
       "description": "Sándwich olímpico clásico",
       "price": 180,
-      "image": "🥪"
+      "image": "🥪",
+      "stock": 14
     },
     {
-      "id": 4,
+      "id": "4",
       "name": "Taco",
       "description": "Taco mexicano picante",
       "price": 250,
-      "image": "🌮"
+      "image": "🌮",
+      "stock": 12
     },
     {
-      "id": 5,
+      "id": "5",
       "name": "Pita rellena",
       "description": "Pan pita con vegetales y carne",
       "price": 220,
-      "image": "🫓"
+      "image": "🫓",
+      "stock": 7
     },
     {
-      "id": 6,
+      "id": "6",
       "name": "Ensalada",
       "description": "Ensalada fresca con aderezo",
       "price": 200,
-      "image": "🥗"
+      "image": "🥗",
+      "stock": 5
     },
     {
-      "id": 7,
+      "id": "7",
       "name": "Hamburguesa",
       "description": "Hamburguesa completa con papas",
       "price": 280,
-      "image": "🍔"
+      "image": "🍔",
+      "stock": 8
     },
     {
-      "id": 8,
+      "id": "8",
       "name": "Tallarines",
       "description": "Tallarines con salsa bolognesa",
       "price": 270,
-      "image": "🍝"
+      "image": "🍝",
+      "stock": 12
     },
     {
-      "id": 9,
+      "id": "9",
       "name": "Sushi",
       "description": "Surtido de piezas de sushi",
       "price": 320,
-      "image": "🍣"
+      "image": "🍣",
+      "stock": 15
+    }
+  ],
+  "order": [
+    {
+      "id": "2",
+      "productId": 3,
+      "quantity": 1
+    },
+    {
+      "id": "3",
+      "productId": 5,
+      "quantity": 3
     }
   ]
 }
